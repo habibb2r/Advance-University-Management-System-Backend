@@ -75,27 +75,33 @@ const localGuardianSchema = z.object({
 
 // Student schema
 const studentValidationSchema = z.object({
-  id: z.string(),
-  name: userNameSchema,
-  gender: GenderEnum,
-  dateOfBirth: z.string().optional(),
-  email: z.string().email('Email is not valid'),
-  contactNo: z
-    .string()
-    .length(11, 'Contact number must be 11 digits')
-    .regex(/^\d{11}$/, 'Contact number must be 11 digits'),
-  emergencyContact: z
-    .string()
-    .length(11, 'Emergency Contact number must be 11 digits')
-    .regex(/^\d{11}$/, 'Emergency Contact number must be 11 digits'),
-  bloodGroup: BloodGroupEnum,
-  presentAddress: z.string(),
-  permanentAddress: z.string(),
-  guardian: guardianSchema,
-  localGuardian: localGuardianSchema,
-  profileImg: z.string().optional(),
-  isActive: z.enum(['active', 'blocked']).default('active'),
-  isDeleted: z.boolean(),
+  body: z.object({
+    password: z.string().max(20),
+    student: z.object({
+      name: userNameSchema,
+      gender: GenderEnum,
+      dateOfBirth: z.string().optional(),
+      email: z.string().email('Email is not valid'),
+      contactNo: z
+        .string()
+        .length(11, 'Contact number must be 11 digits')
+        .regex(/^\d{11}$/, 'Contact number must be 11 digits'),
+      emergencyContact: z
+        .string()
+        .length(11, 'Emergency Contact number must be 11 digits')
+        .regex(/^\d{11}$/, 'Emergency Contact number must be 11 digits'),
+      bloodGroup: BloodGroupEnum,
+      presentAddress: z.string(),
+      permanentAddress: z.string(),
+      guardian: guardianSchema,
+      localGuardian: localGuardianSchema,
+      profileImg: z.string().optional(),
+    })
+  
+  })
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+
+  studentValidationSchema,
+};
