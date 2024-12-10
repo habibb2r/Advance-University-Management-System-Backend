@@ -1,33 +1,20 @@
 import { model, Schema } from 'mongoose';
-import { TUser } from './user.interface';
-import bcrypt from 'bcrypt';
-import config from '../../config';
-import { TAcademicSemester, TMonths } from './academicSemester.interface';
+import { TAcademicSemester } from './academicSemester.interface';
+import { months, semesterCodes, semesterNames } from './academicSemester.const';
 
 
-const months : TMonths[] = [
-    "January", 
-    "February", 
-    "March", 
-    "April", 
-    "May", 
-    "June", 
-    "July", 
-    "August", 
-    "September", 
-    "October", 
-    "November", 
-    "December"
-  ];
+
 const academicSemesterSchema  = new Schema<TAcademicSemester>(
   {
     
     name: {
       type: String,
+      enum: semesterNames,
       required: true,
     },
     code: {
       type: String,
+      enum: semesterCodes,
       required: true,
     },
     year: {
@@ -37,10 +24,12 @@ const academicSemesterSchema  = new Schema<TAcademicSemester>(
     startMonth: {
       type: String,
       enum: months,
+      required: true
     },
     endMonth: {
       type: String,
       enum: months,
+      required: true
     },
   },
   {
