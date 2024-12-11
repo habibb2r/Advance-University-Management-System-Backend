@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import httpStatus from 'http-status-codes';
-import { NextFunction, Request, Response } from 'express';
-import { UserServices } from './user.service';
 import sendResponse from '../../Utils/sendResponse';
 import catchAsync from '../../Utils/catchAsync';
 import { AcademicSemesterServices } from './academicSemester.service';
