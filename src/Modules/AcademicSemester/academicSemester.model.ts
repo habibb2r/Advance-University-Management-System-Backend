@@ -52,5 +52,12 @@ academicSemesterSchema.pre('save', async function(next){
   next();
 })
 
+academicSemesterSchema.pre('findOneAndUpdate', async function(next){
+  if(this._update.name || this._update.code){
+    throw new Error('Can not update name or code')
+  }
+  next();
+})
+
 
 export const AcademicSemester = model<TAcademicSemester>('AcademicSemester', academicSemesterSchema);
