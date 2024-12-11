@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import {
   StudentMethods,
   StudentModel,
@@ -174,6 +174,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       type: Boolean,
       default: false,
     },
+    admissionSemester: {
+      type: Types.ObjectId,
+      ref: 'AcademicSemester',
+    }
   },
   {
     toJSON: { virtuals: true },
