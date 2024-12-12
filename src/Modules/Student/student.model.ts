@@ -1,4 +1,4 @@
-import { Schema, Types, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import {
   StudentMethods,
   StudentModel,
@@ -175,7 +175,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       default: false,
     },
     admissionSemester: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
     }
   },
