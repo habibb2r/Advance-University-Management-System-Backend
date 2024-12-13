@@ -1,12 +1,11 @@
+import  httpStatus  from 'http-status-codes';
 import { model, Schema } from 'mongoose';
 import { TAcademicSemester } from './academicSemester.interface';
 import { months, semesterCodes, semesterNames } from './academicSemester.const';
+import AppError from '../../errors/AppError';
 
-
-
-const academicSemesterSchema  = new Schema<TAcademicSemester>(
+const academicSemesterSchema = new Schema<TAcademicSemester>(
   {
-    
     name: {
       type: String,
       enum: semesterNames,
@@ -19,17 +18,17 @@ const academicSemesterSchema  = new Schema<TAcademicSemester>(
     },
     year: {
       type: String,
-      required: true
+      required: true,
     },
     startMonth: {
       type: String,
       enum: months,
-      required: true
+      required: true,
     },
     endMonth: {
       type: String,
       enum: months,
-      required: true
+      required: true,
     },
   },
   {
@@ -37,27 +36,27 @@ const academicSemesterSchema  = new Schema<TAcademicSemester>(
   },
 );
 
-
-
-academicSemesterSchema.pre('save', async function(next){
+academicSemesterSchema.pre('save', async function (next) {
   const isSemesterExists = await AcademicSemester.findOne({
     name: this.name,
     year: this.year,
-  })
+  });
 
-  if(isSemesterExists){
-    throw new Error('Semester with same name and year already exists');
+  if (isSemesterExists) {
+    throw new AppError(httpStatus.NOT_ACCEPTABLE,'Semester with same name and year already exists');
   }
 
   next();
-})
+});
 
-academicSemesterSchema.pre('findOneAndUpdate', async function(next){
-  if(this._update.name || this._update.code){
-    throw new Error('Can not update name or code')
+academicSemesterSchema.pre('findOneAndUpdate', async function (next) {
+  if (this._update.name || this._update.code) {
+    throw new AppError(httpStatus.NOT_ACCEPTABLE,'Can not update name or code');
   }
   next();
-})
+});
 
-
-export const AcademicSemester = model<TAcademicSemester>('AcademicSemester', academicSemesterSchema);
+export const AcademicSemester = model<TAcademicSemester>(
+  'AcademicSemester',
+  academicSemesterSchema,
+);

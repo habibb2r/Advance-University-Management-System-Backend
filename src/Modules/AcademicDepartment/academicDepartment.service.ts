@@ -1,6 +1,8 @@
+import  httpStatus from 'http-status-codes';
 import { Types } from 'mongoose';
 import { TAcademicDepartment } from './academicDepartment.interface';
 import { AcademicDepartment } from './academicDepartment.model';
+import AppError from '../../errors/AppError';
 
 const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
   const result = await AcademicDepartment.create(payload);
@@ -16,9 +18,11 @@ const getSingleAcademicDepartmentFromDB = async (
   id: Types.ObjectId | string,
 ) => {
   const ObjectId = Types.ObjectId;
-  const result = await AcademicDepartment.findOne({ _id: new ObjectId(id) }).populate('academicFaculty');
+  const result = await AcademicDepartment.findOne({
+    _id: new ObjectId(id),
+  }).populate('academicFaculty');
   if (!result) {
-    throw new Error('Academic Department not found');
+    throw new AppError(httpStatus.NOT_FOUND,'Academic Department not found');
   }
   return result;
 };
@@ -34,7 +38,7 @@ const updateAcademicDepartmentInDB = async (
     { new: true },
   );
   if (!result) {
-    throw new Error('Academic Department not found');
+    throw new AppError(httpStatus.NOT_FOUND,'Academic Department not found');
   }
   return result;
 };
