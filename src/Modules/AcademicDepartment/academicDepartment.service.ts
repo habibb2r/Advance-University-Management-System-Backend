@@ -8,7 +8,7 @@ const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
 };
 
 const getAllAcademicDepartmentFromDB = async () => {
-  const result = await AcademicDepartment.find();
+  const result = await AcademicDepartment.find().populate('academicFaculty');
   return result;
 };
 
@@ -16,7 +16,7 @@ const getSingleAcademicDepartmentFromDB = async (
   id: Types.ObjectId | string,
 ) => {
   const ObjectId = Types.ObjectId;
-  const result = await AcademicDepartment.findOne({ _id: new ObjectId(id) });
+  const result = await AcademicDepartment.findOne({ _id: new ObjectId(id) }).populate('academicFaculty');
   if (!result) {
     throw new Error('Academic Department not found');
   }
