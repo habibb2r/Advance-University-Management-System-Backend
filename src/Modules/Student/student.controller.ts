@@ -43,6 +43,7 @@ const updateStudent = catchAsync(
     });
   },
 );
+
 const deleteStudent = catchAsync(
   async (req, res) => {
     const { studentId } = req.params;
