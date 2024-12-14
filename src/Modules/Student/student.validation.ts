@@ -103,7 +103,92 @@ const createStudentValidationSchema = z.object({
   })
 });
 
-export const studentValidations = {
+const updateUserNameSchema = z.object({
+  firstName: z
+    .string()
+    .max(20, 'First name must be less than 20 characters')
+    .refine(
+      (value) => value.charAt(0).toUpperCase() + value.slice(1) === value,
+      {
+        message: 'First name must be capitalized',
+      },
+    ).optional(),
+  middleName: z
+    .string()
+    .max(20, 'Middle name must be less than 20 characters')
+    .optional(),
+  lastName: z
+    .string()
+    .max(20, 'Last name must be less than 20 characters')
+    .refine((value) => /^[A-Za-z]+$/.test(value), {
+      message: 'Last name is not valid',
+    }).optional(),
+});
 
+// Guardian schema
+const updateGuardianSchema = z.object({
+  fatherName: z
+    .string()
+    .max(20, "Father's name must be less than 20 characters").optional(),
+  fatherOccupation: z
+    .string()
+    .max(20, 'Occupation must be less than 20 characters').optional(),
+  fatherContactNo: z
+    .string()
+    .length(11, "Father's contact number must be 11 digits")
+    .regex(/^\d{11}$/, "Father's contact number must be 11 digits").optional(),
+  motherName: z
+    .string()
+    .max(20, "Mother's name must be less than 20 characters").optional(),
+  motherOccupation: z
+    .string()
+    .max(20, 'Occupation must be less than 20 characters').optional(),
+  motherContactNo: z
+    .string()
+    .length(11, "Mother's contact number must be 11 digits")
+    .regex(/^\d{11}$/, "Mother's contact number must be 11 digits").optional(),
+});
+
+// LocalGuardian schema
+const updateLocalGuardianSchema = z.object({
+  name: z.string().max(20, 'Name must be less than 20 characters').optional(),
+  occupation: z.string().max(20, 'Occupation must be less than 20 characters').optional(),
+  contactNo: z
+    .string()
+    .length(11, 'Contact number must be 11 digits')
+    .regex(/^\d{11}$/, 'Contact number must be 11 digits'),
+  address: z.string().optional(),
+});
+const updateStudentValidationSchema = z.object({
+  body: z.object({
+    student: z.object({
+      name: updateUserNameSchema.optional(),
+      gender: GenderEnum.optional(),
+      dateOfBirth: z.string().optional(),
+      email: z.string().email('Email is not valid').optional(),
+      contactNo: z
+        .string()
+        .length(11, 'Contact number must be 11 digits')
+        .regex(/^\d{11}$/, 'Contact number must be 11 digits').optional(),
+      emergencyContact: z
+        .string()
+        .length(11, 'Emergency Contact number must be 11 digits')
+        .regex(/^\d{11}$/, 'Emergency Contact number must be 11 digits').optional(),
+      bloodGroup: BloodGroupEnum.optional(),
+      presentAddress: z.string().optional(),
+      permanentAddress: z.string().optional(),
+      guardian: updateGuardianSchema.optional(),
+      localGuardian: updateLocalGuardianSchema.optional(),
+      profileImg: z.string().optional(),
+      admissionSemester: z.string().optional(),  
+      academicDepartment: z.string().optional(),
+    })
+  
+  })
+});
+
+export const studentValidations = {
+  
   createStudentValidationSchema,
+  updateStudentValidationSchema,
 };

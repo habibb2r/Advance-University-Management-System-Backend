@@ -4,6 +4,7 @@ import { Student } from './student.model';
 import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
 import { User } from '../User/user.model';
+import { TStudent } from './student.interface';
 
 const getStudentsFromDB = async () => {
   const result = await Student.find().populate('admissionSemester').populate({
@@ -23,6 +24,10 @@ const getSingleStudent = async (id: string) => {
     }
   });;
   // const result = await Student.aggregate([{ $match: { id: id } }]);
+  return result;
+};
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+  const result = await Student.findOneAndUpdate({id}, payload, {new: true});
   return result;
 };
 
@@ -63,4 +68,5 @@ export const StudentServices = {
   getStudentsFromDB,
   getSingleStudent,
   deleteStudentFromDB,
+  updateStudentIntoDB
 };
