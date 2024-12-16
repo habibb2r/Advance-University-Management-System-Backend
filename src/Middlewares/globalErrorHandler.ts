@@ -9,11 +9,13 @@ import config from '../config';
 import handleZodError from '../errors/HandleZodError';
 import handleValidationError from '../errors/HandleValidationError';
 import handleCastError from '../errors/HandleCastError';
+import handleDuplicateError from '../errors/HandleDuplicateError';
+import AppError from '../errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler  = (err, req, res, next) => {
 
   //setting default values
-  let statusCode = err.statusCode || 500;
+  let statusCode =   500;
   let message = err.message || 'Something went wrong';
 
     let errorSources : TErrorSource = [{
@@ -44,6 +46,21 @@ const globalErrorHandler: ErrorRequestHandler  = (err, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources
+  }
+   else if(err instanceof AppError){
+    statusCode = err?.statusCode;
+    message = err?.message;
+    errorSources = [{
+      path: '',
+      message: err?.message,
+    }]
+  }
+   else if(err instanceof Error){
+    message = err?.message;
+    errorSources = [{
+      path: '',
+      message: err?.message,
+    }]
   }
 
 
