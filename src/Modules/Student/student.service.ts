@@ -20,7 +20,7 @@ const getStudentsFromDB = async (query: Record<string, unknown>) => {
     }))
   })
 
-  const excludeFields = ['searchTerm', 'sort', 'limit']
+  const excludeFields = ['searchTerm', 'sort', 'limit', 'page']
   excludeFields.forEach(el => delete queryObj[el])
   const filterQuery =  searchQuery.find(queryObj).populate('admissionSemester').populate({
     path: 'academicDepartment',
