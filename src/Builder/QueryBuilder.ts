@@ -17,9 +17,9 @@ class QueryBuilder<T>{
                }) as FilterQuery<T>)
              })
        }
+       return this;
        }
     }
 
    
 
-}
