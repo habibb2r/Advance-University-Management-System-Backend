@@ -19,7 +19,13 @@ class QueryBuilder<T>{
        }
        return this;
        }
-    }
+
+       filter(){
+        const queryObj = {...query}
+       }
+
+
+}
 
    
 
