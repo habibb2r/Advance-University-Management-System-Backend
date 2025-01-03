@@ -64,7 +64,6 @@ const getStudentsFromDB = async (query: Record<string, unknown>) => {
 
   const studentQuery = new QueryBuilder(Student.find(), query).search(
     studentSearchableFields).filter().sort().paginate().fields();
-  
     const result = await studentQuery.modelQuery;
     return result;
 };
